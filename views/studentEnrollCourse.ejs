@@ -1,0 +1,234 @@
+<%- include("partials/header"); -%>
+
+<h1>Enroll in a Course</h1>
+
+<!-- Search form -->
+<form action="/student/enroll-course" method="POST">
+  <label for="searchQuery">Search by Course Name or Course ID:</label>
+  <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter course name or ID" required>
+  <button type="submit">Search</button>
+</form>
+
+<!-- Display search results if there are any -->
+<% if (courses) { %>
+  <h2>Search Results:</h2>
+  <ul class="course-list">
+    <% courses.forEach(course => { %>
+      <li class="course-item">
+        <strong>Course ID:</strong> <%= course.courseId %> |
+        <strong>Name:</strong> <%= course.name %>
+
+        <!-- Sections for this course -->
+        <% if (course.sections && course.sections.length > 0) { %>
+          <ul class="section-list">
+            <% course.sections.forEach(section => { %>
+              <li class="section-item">
+                <div class="section-details">
+                  <strong>Section ID:</strong> <%= section.sectionId %> |
+                  <strong>Term:</strong> <%= section.term %> |
+                  <strong>Classroom:</strong> <%= section.classroom %> |
+                  <strong>Start Time:</strong> <%= section.startTime %> |
+                  <strong>End Time:</strong> <%= section.endTime %> |
+                  <strong>Days:</strong> <%= section.days.join(', ') %> |
+                  <strong>Enrolled Students:</strong> <%= section.students.length %>/5
+                </div>
+                
+                <!-- Enroll button logic -->
+                <div class="enroll-button">
+                  <% if (enrolledSectionIds.includes(section.courseId)) { %>
+                    <span class="status enrolled">Already Enrolled</span>
+                  <% } else if (completedCourseIds.includes(course.courseId)) { %>
+                    <span class="status completed">Course Completed</span>
+                  <% } else if (section.students.length < 5) { %>
+                    <form action="/student/enroll-course/<%= section.sectionId %>/enroll" method="POST" style="display: inline;">
+                      <button type="submit">Enroll</button>
+                    </form>
+                  <% } else { %>
+                    <span class="status full">Section Full</span>
+                  <% } %>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="no-sections">No sections available for this course.</p>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<style>
+  body {
+    font-family: sans-serif;
+    color: #505050;
+    background-color: #f8f9fa;
+    line-height: 1.6;
+  }
+
+  h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #2980b9;
+    text-align: center;
+  }
+
+  h1 {
+    margin: 2rem 0;
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    margin: 1.5rem 0;
+    font-size: 1.8rem;
+  }
+
+  /* Search Form Styles */
+  form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #2980b9;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  /* Course List Styles */
+  .course-list {
+    list-style: none;
+    padding: 0;
+    max-width: 1000px;
+    margin: 2rem auto;
+  }
+
+  .course-item {
+    background: white;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+
+  .section-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .section-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-details {
+    flex: 1;
+    line-height: 1.8;
+  }
+
+  .section-details strong {
+    color: #2980b9;
+  }
+
+  .enroll-button {
+    margin-left: 1.5rem;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .enroll-button button {
+    width: 100%;
+  }
+
+  .status {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .status.enrolled {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .status.full {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+
+  .no-sections {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 1rem;
+  }
+
+  /* Welcome Message */
+  .welcome-message {
+    text-align: center;
+    color: #505050;
+    margin: 1rem 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .section-item {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .enroll-button {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .section-details {
+      text-align: center;
+    }
+  }
+</style>
+
+<%- include("partials/footer"); -%>

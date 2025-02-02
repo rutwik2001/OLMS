@@ -1,0 +1,15 @@
+<%- include("partials/header"); -%>
+
+<div class="container mt-5">
+  <h2>Search for a User</h2>
+  <form action="/search" method="POST" class="mb-3">
+    <div class="form-group">
+      <input type="text" name="username" placeholder="Enter username" required class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+  </form>
+
+ 
+</div>
+
+<%- include("partials/footer"); -%>

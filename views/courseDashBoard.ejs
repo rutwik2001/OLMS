@@ -1,0 +1,182 @@
+<%- include("partials/header"); -%>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Font settings */
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  h2, h3 {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Container spacing */
+  .container.mt-5 {
+    padding: 20px 0;
+  }
+
+  /* Card styling */
+  .card {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background-color: #3498db !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 1rem 1.5rem;
+  }
+
+  .card-header h3 {
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    font-size: 1.3rem;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.5px;
+  }
+
+  .card-text {
+    color: #505050;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Details text styling */
+  .row p {
+    margin-bottom: 0.8rem;
+    color: #505050;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .row p strong {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  /* Button styling */
+  .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-right: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .card-title {
+      font-size: 1.3rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      margin-bottom: 0.75rem;
+      margin-right: 0;
+    }
+
+    .row p {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+<div class="container mt-5">
+  <!-- Course Details -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title"><%= course.name %></h2>
+      <p class="card-text"><%= course.about %></p>
+      <%if(course.syllabusLink){%>
+      <a href="/download-syllabus/<%= course.syllabusLink.split('/').pop() %>" class="btn btn-primary" target="_blank">Download Syllabus</a>
+      <%}%>
+      <%if(user.role == "Instructor" && !section.completed){%>
+        <a href="/instructor/<%= section.courseId %>/add-edit-syllabus" class="btn btn-primary">Add/Edit Syllabus</a>
+        <br/>
+        <br/>
+        <form action="/instructor/<%= section.courseId %>/<%= section.sectionId %>/submit-final-grades" method="GET">
+          <button type="submit" class="btn btn-danger">Submit Final Grades</button>
+        </form>
+        <%}%>
+    </div>
+  </div>
+
+  <!-- Section Details -->
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h3>Section <%= section.sectionId %> Details</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+          <div class="col-md-6">
+            <p><strong>Term:</strong> <%= section.term %> <%= section.year %></p>
+            <p><strong>Classroom:</strong> <%= section.classroom %></p>
+            <p><strong>Course Code:</strong> <%= section.courseId %></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Schedule:</strong> <%= section.days.join(', ') %></p>
+            <p><strong>Time:</strong> <%= section.startTime %> - <%= section.endTime %></p>
+            <p><strong>Total Students:</strong> <%= section.students.length %></p>
+          </div>
+          
+        
+      </div>
+    </div>
+  </div>
+  <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/announcements" class="btn btn-primary">Announcements</a>
+  <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/modules" class="btn btn-primary">Modules</a>
+  <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/videos" class="btn btn-primary">Videos</a>
+  <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/assignments" class="btn btn-primary">Assignments</a>
+  <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/people" class="btn btn-primary">People</a>
+  <%if(user.role == "Student"){%>
+    <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/grades" class="btn btn-primary">Grades</a>
+    <%}%>
+    <%if(user.role == "Instructor"){%>
+      <a href="/section/<%= section.courseId %>/<%= section.sectionId %>/select-student" class="btn btn-primary">Grades</a>
+      <%}%>
+  <br/>
+  <br/>
+  <br/>
+  <!-- Students Section -->
+  
+</div>
+
+<%- include("partials/footer"); -%>

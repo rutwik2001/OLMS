@@ -1,0 +1,13 @@
+<%- include("partials/header"); -%>
+
+<h2>Instructor Profile</h2>
+<div class="container mt-5">
+  <p><strong>User ID:</strong> <%= profile.userId %></p>
+  <p><strong>Department:</strong> <%= profile.department %></p>
+  <p><strong>Specializations:</strong> <%= profile.specializations.join(', ') %></p>
+  <p><strong>Publications:</strong> <%= profile.publications.join(', ') %></p>
+  <p><strong>Education:</strong> <%= profile.education %></p>
+  <p><strong>Research Interests:</strong> <%= profile.researchInterests.join(', ') %></p>
+</div>
+
+<%- include("partials/footer"); -%>

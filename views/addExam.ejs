@@ -1,0 +1,144 @@
+<%- include("partials/header"); -%>
+
+<style>
+  .container {
+    max-width: 80%;
+    padding: 20px;
+    /* background-color: #f8f9fa; */
+    border-radius: 8px;
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+  .card-header {
+    background-color: #2980b9 !important;
+    color: white !important;
+    padding: 1rem 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h2.card-title {
+    color: #2980b9;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  h4 {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    font-size: 1.4rem;
+  }
+
+  p {
+    color: #505050;
+    font-family: sans-serif;
+    line-height: 1.6;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+  }
+
+  .table th {
+    background-color: #3498db;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  .table td {
+    padding: 1rem;
+    color: #505050;
+    font-family: sans-serif;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+  }
+
+  .table-striped tbody tr:hover {
+    background-color: #f0f7fc;
+    transition: background-color 0.2s;
+  }
+
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mt-5 {
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <h4>Add Exam Grades</h4>
+    <% if (section.students && section.students.length > 0) { %>
+      <form action="/instructor/<%= course.courseId %>/<%= section.sectionId %>/add-exam" method="POST" class="d-flex">
+        <input type="text" id="title" name="title" placeholder="Enter Exam Title" required>
+  </div>
+  
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Enter Exam Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% section.students.forEach((student, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= student.studentId %></td>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <% if (user.role === "Instructor") { %>
+              <td>
+                <input type="number" id="grade[<%= index %>]" name="grade[<%= index %>]" value="0" placeholder="Enter Grade" required>
+              </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary ms-2">Submit Grades</button>
+  </form>
+  <% } else { %>
+    <p>No students enrolled in this section.</p>
+  <% } %>
+</div>
+
+
+<%- include("partials/footer"); -%>

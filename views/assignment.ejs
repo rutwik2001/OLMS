@@ -1,0 +1,180 @@
+<%- include("partials/header"); -%>
+<style>
+  .container {
+    max-width: 1000px;
+    padding: 20px;
+    /* background-color: #f8f9fa; */
+    border-radius: 8px;
+  }
+
+  .card {
+    border: none;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem; */
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+  .card-header {
+    background-color: #2980b9 !important;
+    color: white !important;
+    padding: 1rem 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h2.card-title {
+    color: #2980b9;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  h4 {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+  }
+
+  h1 {
+    color: #2980b9;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #505050;
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    background-color: #3498db;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: white;
+    font-family: sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px 0;
+    transition: background-color 0.2s;
+  }
+
+  .btn-primary:hover {
+    background-color: #2980b9;
+    color: white;
+    text-decoration: none;
+  }
+
+  a {
+    color: #3498db;
+    text-decoration: none;
+    font-family: sans-serif;
+    margin-right: 15px;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+
+  .form-control {
+    border: 1px solid #2980b9;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-family: sans-serif;
+    color: #505050;
+  }
+
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mt-5 {
+    margin-top: 3rem;
+  }
+
+  .submission-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 2rem;
+  }
+
+  .submission-container h2 {
+    color: #2980b9;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 1.5rem;
+  }
+</style>
+<div class="container mt-5">
+  <!-- Course Details -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="card-title"><%= course.name %></h2>
+      <h2 class="card-title"></h2>Section <%= section.sectionId %></h2>
+      <p class="card-text"><%= course.about %></p>
+    </div>
+  </div>
+
+  <!-- Section Details -->
+  
+  
+  <!-- Students Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+      <h4>Assignments</h4>
+    </div>
+    
+    <div class="card-body">
+      <% for(var i=0; i< section.assignments.length; i++) { %>
+        <% if(section.assignments[i].title == title) { %>
+        <h1><%= section.assignments[i].title %></h1>
+        <p><%= section.assignments[i].description %></p>
+        <p>Due Date: <%= new Date(section.assignments[i].dueDateUnix * 1000).toUTCString() %></p>
+        
+        <a href="/assignment/<%= section.assignments[i].link.split('/').pop() %>?filename=<%= section.assignments[i].filename %>&mimeType=<%= section.assignments[i].mimeType %>">File</a>
+
+        <%if(user.role == "Instructor"){%>
+            <a href="/instructor/section/<%= course.courseId %>/<%= section.sectionId %>/assignemnt/<%= section.assignments[i].title %>/submissions" class="btn btn-primary">View Student Submission</a>
+            <%}%>
+        <%if(user.role == "Student" ){%>
+          <br/>
+            <a href="/student/section/<%= course.courseId %>/<%= section.sectionId %>/assignemnt/<%= section.assignments[i].title %>/my-submissions" class="btn btn-primary">View My Submission</a>
+            <%if(Math.floor(Date.now() / 1000) < section.assignments[i].dueDateUnix){%></section.assignments>
+            <div class="container mt-5">
+                <h2>Submission</h2>
+                <form action="/student/section/<%= course.courseId %>/<%= section.sectionId %>/assignemnt/<%= section.assignments[i].title %>/submission" method="POST" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="moduleFile"
+                      name="moduleFile"
+                      accept=".pdf,.doc,.docx"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+              <%}%>
+            <%}%>
+      <% } %>
+
+      <% } %>
+    </div>
+
+    
+  </div>
+</div>
+
+<%- include("partials/footer"); -%>

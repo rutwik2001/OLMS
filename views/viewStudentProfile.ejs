@@ -1,0 +1,103 @@
+<%- include("partials/header"); -%>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Font settings */
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #505050;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  /* Container and card styling */
+  .container {
+    max-width: 800px;
+    padding: 20px;
+  }
+
+  .card {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Title and content styling */
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+  }
+
+  .card-text {
+    color: #505050;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text strong {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+
+<h2>Student Profile</h2>
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Profile Details</h3>
+      <p class="card-text"><strong>Name:</strong> <%= searchedUser.name %></p>
+      <p class="card-text"><strong>Email:</strong> <%= searchedUser.email %></p>
+      <p class="card-text"><strong>Date of Birth:</strong> <%= searchedUser.dob %></p>
+      <p class="card-text"><strong>Major:</strong> <%= profile.major %></p>
+      <p class="card-text"><strong>Degree:</strong> <%= profile.degree %></p>
+      <p class="card-text"><strong>Graduation Year:</strong> <%= profile.graduationYear %></p>
+      <p class="card-text"><strong>Total Credits:</strong> <%= profile.totalCredits %></p>
+    </div>
+  </div>
+</div>
+
+<!-- Message Student Button (Optional based on user role) -->
+<!-- <% if (user.role === 'Instructor') { %>
+  <div class="container mt-3 text-center">
+    <a href="/instructor/message/student/<%= profile.userId %>" class="btn btn-primary">Message Student</a>
+  </div>
+<% } %> -->
+
+<%- include("partials/footer"); -%>

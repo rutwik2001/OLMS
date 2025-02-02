@@ -1,0 +1,114 @@
+<%- include("partials/header"); -%>
+
+<style>
+  body {
+    font-family: sans-serif;
+    color: #505050;
+    background-color: #f8f9fa;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #2980b9;
+    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 1.8rem;
+  }
+
+  .card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .profile-info strong {
+    color: #2980b9;
+  }
+
+  /* Edit Button */
+  #edit-btn {
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+  }
+
+  #edit-btn:hover {
+    background-color: #2980b9;
+  }
+</style>
+
+<h2>Profile</h2>
+
+<div class="container my-4">
+  <!-- Success and error feedback -->
+  <% if (success) { %>
+    <div class="alert alert-success text-center"><%= success %></div>
+  <% } %>
+  <% if (error) { %>
+    <div class="alert alert-danger text-center"><%= error %></div>
+  <% } %>
+
+  <!-- Display static profile info in card format -->
+  <div id="profile-view" class="card mx-auto" style="max-width: 600px; display: block;">
+    <div class="card-body profile-info">
+      <p><strong>Name:</strong> <%= user.name || 'N/A' %></p>
+      <p><strong>Email:</strong> <%= user.email || 'N/A' %></p>
+      <p><strong>Phone Number:</strong> <%= user.mobile || 'N/A' %></p>
+      <p><strong>Date of Birth:</strong> <%= user.dob || 'N/A' %></p>
+      <p><strong>Department:</strong> <%= profile.department || 'N/A' %></p>
+      <p><strong>Specializations:</strong> <%= Array.isArray(profile.specializations) ? profile.specializations.join(', ') : profile.specializations || 'N/A' %></p>
+      <p><strong>Publications:</strong> <%= Array.isArray(profile.publications) ? profile.publications.join(', ') : profile.publications || 'N/A' %></p>
+      <p><strong>Education:</strong> <%= profile.education || 'N/A' %></p>
+      <p><strong>Research Interests:</strong> <%= Array.isArray(profile.researchInterests) ? profile.researchInterests.join(', ') : profile.researchInterests || 'N/A' %></p>
+
+      <button id="edit-btn" class="btn">Edit</button>
+    </div>
+  </div>
+
+  <!-- Edit form (initially hidden) -->
+  <div id="profile-edit" style="display: none;">
+    <form action="/instructor/profile" method="POST" class="mx-auto" style="max-width: 600px;">
+      <div class="mb-3">
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" value="<%= profile.department || '' %>" required class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="specializations">Specializations (comma-separated):</label>
+        <input type="text" id="specializations" name="specializations" value="<%= profile.specializations || '' %>" required class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="publications">Publications (comma-separated):</label>
+        <input type="text" id="publications" name="publications" value="<%= profile.publications || '' %>" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="education">Education:</label>
+        <input type="text" id="education" name="education" value="<%= profile.education || '' %>" required class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="researchInterests">Research Interests (comma-separated):</label>
+        <input type="text" id="researchInterests" name="researchInterests" value="<%= profile.researchInterests || '' %>" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer"); -%>
+
+<script>
+  document.getElementById('edit-btn').addEventListener('click', function() {
+    document.getElementById('profile-view').style.display = 'none';
+    document.getElementById('profile-edit').style.display = 'block';
+  });
+
+  document.getElementById('cancel-btn').addEventListener('click', function() {
+    document.getElementById('profile-edit').style.display = 'none';
+    document.getElementById('profile-view').style.display = 'block';
+  });
+</script>

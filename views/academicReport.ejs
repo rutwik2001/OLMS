@@ -1,0 +1,41 @@
+<%- include("partials/header"); -%>
+
+<div class="container mt-5">
+  <h2>Your Academic Reports</h2>
+
+  <% if (reports.length === 0) { %>
+    <p>No academic reports found.</p>
+  <% } else { %>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Section</th>
+          <th>Total Grade</th>
+          <th>Semester</th>
+          <th>Year</th>
+          <th>Credits Earned</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let totalCredits = 0; %> <!-- Initialize total credits variable -->
+        <% reports.forEach(report => { %>
+          <tr>
+            <td><%= report.courseId %></td>
+            <td><%= report.sectionId %></td>
+            <td><%= report.totalGrade %></td>
+            <td><%= report.semester %></td>
+            <td><%= report.year %></td>
+            <td><%= report.credits %></td>
+          </tr>
+          <% totalCredits += report.credits; %> <!-- Accumulate credits -->
+        <% }) %>
+      </tbody>
+    </table>
+
+    <!-- Display total credits earned -->
+    <h4>Total Credits Earned: <%= totalCredits %></h4>
+  <% } %>
+</div>
+
+<%- include("partials/footer"); -%>

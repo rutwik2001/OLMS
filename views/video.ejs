@@ -1,0 +1,14 @@
+<%- include("partials/header"); -%>
+
+<div class="container mt-5" style="margin-top: 1rem !important;">
+            <h2 class="song-name" style="position: relative; color: #E04D01; font-size: 24px; font-weight: 600; margin-bottom: 10px;"><%= video.title %></h2>
+            <div class="video-container" style="text-align: center;">
+                <video controls autoplay name="media" style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <source src="/video/<%= video.link.split('/').pop() %>" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        
+</div>
+
+<%- include("partials/footer"); -%>

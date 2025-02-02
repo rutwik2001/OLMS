@@ -1,0 +1,149 @@
+<%- include("partials/header"); -%>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Font settings */
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #505050;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* Container styling */
+  .container.mt-5 {
+    padding: 20px 0;
+    max-width: 800px;
+  }
+
+  /* Form styling */
+  form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+
+  form:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    outline: none;
+  }
+
+  .form-control:hover {
+    border-color: #3498db;
+  }
+
+  /* File input specific styling */
+  input[type="file"] {
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+
+  input[type="file"]::-webkit-file-upload-button {
+    background-color: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    margin-right: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #2980b9;
+  }
+
+  /* Button styling */
+  .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    padding: 0.75rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container.mt-5 {
+      padding: 15px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    form {
+      padding: 1.5rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.75rem;
+    }
+  }
+</style>
+<div class="container mt-5">
+  <h2>Add/Edit Syllabus Link</h2>
+  <form action="/instructor/<%= courseId %>/add-edit-syllabus" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="syllabusFile" class="form-label">Upload Syllabus File</label>
+      <input
+        type="file"
+        class="form-control"
+        id="syllabusFile"
+        name="syllabusFile"
+        accept=".pdf,.doc,.docx"
+        required
+      />
+      <p>Supported types: pdf, doc, docx</p>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<%- include("partials/footer"); -%>
